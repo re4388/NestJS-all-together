@@ -10,6 +10,8 @@ import { TodoController } from './features/todo/todo.controller';
 import { AddUserMiddleware } from './middlewares/add-user.middleware';
 import { ConfigurationModule } from './common/configuration/configuration.module';
 import { ConfigModule } from '@nestjs/config';
+import { StorageModule } from './common/storage/storage.module';
+import { BookModule } from './common/book/book.module';
 import configurationFactory from './config/configuration.factory';
 
 class MessageBox {
@@ -29,7 +31,11 @@ class MessageBox {
     ConfigModule.forRoot({
       envFilePath: ['development.local.env', 'development.env'],
       expandVariables: true // 開啟環境變數檔變數嵌入功能
-    })
+    }),
+
+    StorageModule,
+
+    BookModule
 
     // ConfigModule.forRoot({
     //   envFilePath: ['development.local.env', 'development.env'],

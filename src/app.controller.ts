@@ -22,11 +22,24 @@ export class AppController {
     @Inject('ALIAS_APP_SERVICE') private readonly alias: AppService,
     @Optional() @Inject('HANDSOME_MAN') private readonly handsomeMan = { name: '' },
     // private readonly configService: ConfigurationService
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {
     console.log(this.messageBox);
     console.log(this.alias === this.appService); // 進行比對
     console.log(this.handsomeMan);
+
+
+    this.appService.addBookToStorage({ name: 'Nest Tutorial' });
+    this.appService.addBookToBookStorage({ name: 'Angular Tutorial' });
+    console.log(`AppController: ${Math.random()}`);
+  }
+
+  @Get('/compare')
+  getCompare() {
+    return {
+      storage: this.appService.getStorageList(),
+      books: this.appService.getBookList()
+    };
   }
 
   @Get()
