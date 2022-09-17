@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { BeforeApplicationShutdown, MiddlewareConsumer, Module, NestModule, OnApplicationBootstrap, OnModuleDestroy, OnModuleInit, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TodoModule } from './features/todo/todo.module';
@@ -72,7 +72,20 @@ class MessageBox {
     }
   ],
 })
-export class AppModule implements NestModule {
+export class AppModule implements NestModule, OnModuleInit, OnApplicationBootstrap, OnModuleDestroy, BeforeApplicationShutdown {
+  beforeApplicationShutdown(): void {
+    console.log('[AppModule]: before shutdown event!');
+  }
+  onModuleDestroy(): void {
+    console.log('[AppModule]: destroy event!');
+  }
+  onApplicationBootstrap() {
+    console.log('[AppModule]: bootstrap event!');
+  }
+  onModuleInit(): void {
+    console.log('[AppModule]: initial event!');
+  }
+
   configure(consumer: MiddlewareConsumer) {
     // consumer.apply(LoggerMiddleware, HelloWorldMiddleware).forRoutes(TodoController)
     consumer.apply(AddUserMiddleware).forRoutes("")
