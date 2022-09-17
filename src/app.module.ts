@@ -1,4 +1,11 @@
-import { BeforeApplicationShutdown, MiddlewareConsumer, Module, NestModule, OnApplicationBootstrap, OnModuleDestroy, OnModuleInit, RequestMethod } from '@nestjs/common';
+import {
+  BeforeApplicationShutdown, MiddlewareConsumer,
+  Module, NestModule, OnApplicationBootstrap,
+  OnModuleDestroy, OnModuleInit,
+  RequestMethod
+} from '@nestjs/common';
+
+import { HttpModule } from '@nestjs/axios'
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TodoModule } from './features/todo/todo.module';
@@ -9,11 +16,15 @@ import { HelloWorldMiddleware } from './middlewares/hello-world.middleware';
 import { TodoController } from './features/todo/todo.controller';
 import { AddUserMiddleware } from './middlewares/add-user.middleware';
 import { ConfigurationModule } from './common/configuration/configuration.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { StorageModule } from './common/storage/storage.module';
 import { BookModule } from './common/book/book.module';
 import { Storage2Module } from './common/storage2/storage2.module';
 import configurationFactory from './config/configuration.factory';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { MulterHelper } from './core/helper/multer.helper';
+import { Agent } from 'https';
 
 class MessageBox {
   message: string;
@@ -25,6 +36,23 @@ class MessageBox {
 
 @Module({
   imports: [
+
+    HttpModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => ({
+        httpsAgent: new Agent({ rejectUnauthorized: false }),
+        timeout: config.get('HTTP_TIMEOUT')
+      }),
+      inject: [
+        ConfigService
+      ]
+    }),
+
+
+    // HttpModule.register({
+    //   httpsAgent: new Agent({ rejectUnauthorized: false })
+    // }),
+
     TodoModule,
     CopyTodoModule,
     HandsomeModule,
@@ -32,6 +60,17 @@ class MessageBox {
     ConfigModule.forRoot({
       envFilePath: ['development.local.env', 'development.env'],
       expandVariables: true // 開啟環境變數檔變數嵌入功能
+    }),
+
+    // MulterModule.register({
+    //   storage: diskStorage({
+    //     destination: MulterHelper.destination,
+    //     filename: MulterHelper.filenameHandler
+    //   })
+    // }),
+
+    MulterModule.register({
+      dest: './upload'
     }),
 
     StorageModule,

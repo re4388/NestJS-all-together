@@ -1,4 +1,9 @@
-import { Controller, Get, HttpException, HttpStatus, Inject, NotAcceptableException, Optional, Param, ParseIntPipe, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Controller, Get, HttpException, HttpStatus, Inject,
+  NotAcceptableException, Optional, Param, ParseIntPipe, Post,
+  UploadedFile, UploadedFiles, UseFilters,
+  UseGuards, UseInterceptors
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { ConfigService } from '@nestjs/config';
 // import { ConfigurationService } from './common/configuration/configuration.service';
@@ -13,6 +18,7 @@ import { HelloWorldInterceptor } from './interceptors/hello-world.interceptor';
 import { ParseIntPipe as CustomParseIntPipe } from './pipes/parse-int.pipe';
 import { Storage2Service } from './common/storage2/storage2.service';
 import { ModuleRef } from '@nestjs/core';
+import { AnyFilesInterceptor, FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller()
 @UseInterceptors(HelloWorldInterceptor)
@@ -50,6 +56,49 @@ export class AppController {
 
 
 
+  }
+
+  @Get('/todos')
+  getTodos() {
+    return this.appService.getTodos();
+  }
+
+
+  @Post('/multipleAnyField')
+  @UseInterceptors(AnyFilesInterceptor())
+  uploadMultipleFilesWithAnyField(@UploadedFiles() files: Express.Multer.File[]) {
+    return files.map(({ fieldname, originalname }) => ({ fieldname, originalname }));
+  }
+
+
+
+  @Post('/multipleField')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'first' },
+    { name: 'second' }
+  ]))
+  uploadMultipleFieldFiles(@UploadedFiles() files: { [x: string]: Express.Multer.File[] }) {
+    const { first, second } = files;
+    const list = [...first, ...second];
+    return list.map(({ fieldname, originalname }) => ({ fieldname, originalname }));
+  }
+
+
+
+  @Post('/multiple')
+  @UseInterceptors(FilesInterceptor('files'))
+  uploadMultipleFiles(@UploadedFiles() files: Express.Multer.File[]) {
+    return files.map(({ fieldname, originalname }) => ({ fieldname, originalname }));
+  }
+
+
+
+
+  @Post('/single')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadSingleFile(@UploadedFile() file: Express.Multer.File) {
+    console.log("file", file);
+    return file;
   }
 
   @Get()
