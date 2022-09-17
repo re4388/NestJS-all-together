@@ -11,12 +11,23 @@ import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { HelloWorldInterceptor } from './interceptors/hello-world.interceptor';
 import { ParseIntPipe as CustomParseIntPipe } from './pipes/parse-int.pipe';
+import { Storage2Service } from './common/storage2/storage2.service';
+import { ModuleRef } from '@nestjs/core';
 
 @Controller()
 @UseInterceptors(HelloWorldInterceptor)
 // @UseGuards(AuthGuard)
 export class AppController {
+
+
+  private readonly storage2Service: Storage2Service;
+
   constructor(
+
+    private readonly moduleRef: ModuleRef,
+
+
+
     private readonly appService: AppService,
     @Inject('MESSAGE_BOX') private readonly messageBox,
     @Inject('ALIAS_APP_SERVICE') private readonly alias: AppService,
@@ -24,6 +35,10 @@ export class AppController {
     // private readonly configService: ConfigurationService
     private readonly configService: ConfigService,
   ) {
+
+    this.storage2Service = this.moduleRef.get(Storage2Service, { strict: false });
+    this.storage2Service.addData({ name: 'BEN_storage' });
+
     console.log(this.messageBox);
     console.log(this.alias === this.appService); // 進行比對
     console.log(this.handsomeMan);
@@ -32,7 +47,16 @@ export class AppController {
     this.appService.addBookToStorage({ name: 'Nest Tutorial' });
     this.appService.addBookToBookStorage({ name: 'Angular Tutorial' });
     console.log(`AppController: ${Math.random()}`);
+
+
+
   }
+
+  @Get()
+  getHello2() {
+    return this.storage2Service.getList();
+  }
+
 
   @Get('/compare')
   getCompare() {

@@ -12,6 +12,7 @@ import { ConfigurationModule } from './common/configuration/configuration.module
 import { ConfigModule } from '@nestjs/config';
 import { StorageModule } from './common/storage/storage.module';
 import { BookModule } from './common/book/book.module';
+import { Storage2Module } from './common/storage2/storage2.module';
 import configurationFactory from './config/configuration.factory';
 
 class MessageBox {
@@ -35,7 +36,9 @@ class MessageBox {
 
     StorageModule,
 
-    BookModule
+    BookModule,
+
+    Storage2Module
 
     // ConfigModule.forRoot({
     //   envFilePath: ['development.local.env', 'development.env'],
