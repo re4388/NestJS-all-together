@@ -7,6 +7,7 @@ import { HandsomeModule } from './handsome/handsome.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { HelloWorldMiddleware } from './middlewares/hello-world.middleware';
 import { TodoController } from './features/todo/todo.controller';
+import { AddUserMiddleware } from './middlewares/add-user.middleware';
 
 class MessageBox {
   message: string;
@@ -40,7 +41,8 @@ class MessageBox {
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware, HelloWorldMiddleware).forRoutes(TodoController)
+    // consumer.apply(LoggerMiddleware, HelloWorldMiddleware).forRoutes(TodoController)
+    consumer.apply(AddUserMiddleware).forRoutes("")
 
     // configure(consumer: MiddlewareConsumer) {
     //   consumer.apply(LoggerMiddleware).forRoutes(TodoController)

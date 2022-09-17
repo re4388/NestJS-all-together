@@ -2,31 +2,31 @@ import { Module } from '@nestjs/common';
 
 
 
-// const HANDSOME_HAO = {
+// const HANDSOME_BEN = {
 //     provide: 'HANDSOME_MAN',
 //     useValue: {
-//         name: 'HAO'
+//         name: 'BEN'
 //     }
 // };
 
-const HANDSOME_HAO = {
+const HANDSOME_BEN = {
     provide: 'HANDSOME_MAN',
     useFactory: async () => {
-        const getHAO = new Promise(resolve => {
-            setTimeout(() => resolve({ name: 'HAO' }), 2000);
+        const getBEN = new Promise(resolve => {
+            setTimeout(() => resolve({ name: 'BEN' }), 2000);
         });
-        const HAO = await getHAO;
-        return HAO;
+        const BEN = await getBEN;
+        return BEN;
     }
 };
 
 
 @Module({
     providers: [
-        HANDSOME_HAO
+        HANDSOME_BEN
     ],
     exports: [
-        HANDSOME_HAO
+        HANDSOME_BEN
     ]
 })
 export class HandsomeModule { }

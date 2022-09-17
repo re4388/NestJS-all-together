@@ -10,7 +10,7 @@ export class AppService {
     const users = [
       {
         id: 1,
-        name: 'HAO'
+        name: 'BEN'
       }
     ];
     const user = users.find(x => x.id === id);

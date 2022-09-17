@@ -1,14 +1,18 @@
 import { Controller, Get, HttpException, HttpStatus, Inject, NotAcceptableException, Optional, Param, ParseIntPipe, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Auth } from './decorators/auth.decorator';
+import { Roles } from './decorators/roles.decorator';
+import { User } from './decorators/user.decorator';
 import { CustomException } from './exceptions/custom.exception';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
 import { HelloWorldInterceptor } from './interceptors/hello-world.interceptor';
 import { ParseIntPipe as CustomParseIntPipe } from './pipes/parse-int.pipe';
 
 @Controller()
 @UseInterceptors(HelloWorldInterceptor)
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class AppController {
   constructor(
     private readonly appService: AppService,
@@ -21,10 +25,33 @@ export class AppController {
     console.log(this.handsomeMan);
   }
 
+  @Auth('staff')
   @Get()
-  getAll() {
-    return [];
+  getHello(@User('name') name: string): string {
+    return name;
   }
+
+  // @UseGuards(RoleGuard)
+  // @Roles('admin')
+  // @Get()
+  // getHello(@User('name') name: string): string {
+  //   return name;
+  // }
+
+  // @Get()
+  // getHello(@User('name') name: string): string {
+  //   return name;
+  // }
+
+  // @Get()
+  // getHello(@User() user: any): string {
+  //   return user;
+  // }
+
+  // @Get()
+  // getAll() {
+  //   return [];
+  // }
 
   // @Get()
   // getHello(): string {
