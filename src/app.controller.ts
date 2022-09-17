@@ -1,12 +1,14 @@
-import { Controller, Get, HttpException, HttpStatus, Inject, NotAcceptableException, Optional, Param, ParseIntPipe, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Inject, NotAcceptableException, Optional, Param, ParseIntPipe, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CustomException } from './exceptions/custom.exception';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { AuthGuard } from './guards/auth.guard';
 import { HelloWorldInterceptor } from './interceptors/hello-world.interceptor';
 import { ParseIntPipe as CustomParseIntPipe } from './pipes/parse-int.pipe';
 
 @Controller()
 @UseInterceptors(HelloWorldInterceptor)
+@UseGuards(AuthGuard)
 export class AppController {
   constructor(
     private readonly appService: AppService,
@@ -20,9 +22,14 @@ export class AppController {
   }
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getAll() {
+    return [];
   }
+
+  // @Get()
+  // getHello(): string {
+  //   return this.appService.getHello();
+  // }
 
   // @Get(':id')
   // getUser(
