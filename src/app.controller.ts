@@ -1,10 +1,12 @@
-import { Controller, Get, HttpException, HttpStatus, Inject, NotAcceptableException, Optional, Param, ParseIntPipe, UseFilters } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Inject, NotAcceptableException, Optional, Param, ParseIntPipe, UseFilters, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CustomException } from './exceptions/custom.exception';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { HelloWorldInterceptor } from './interceptors/hello-world.interceptor';
 import { ParseIntPipe as CustomParseIntPipe } from './pipes/parse-int.pipe';
 
 @Controller()
+@UseInterceptors(HelloWorldInterceptor)
 export class AppController {
   constructor(
     private readonly appService: AppService,
@@ -15,6 +17,11 @@ export class AppController {
     console.log(this.messageBox);
     console.log(this.alias === this.appService); // 進行比對
     console.log(this.handsomeMan);
+  }
+
+  @Get()
+  getHello(): string {
+    return this.appService.getHello();
   }
 
   // @Get(':id')
@@ -55,20 +62,22 @@ export class AppController {
   //   return this.appService.getHello();
   // }
 
-  @Get()
-  @UseFilters(HttpExceptionFilter)
-  getHello(): string {
-    // throw new Error('出錯囉!');
-    // throw new HttpException('出錯囉!', HttpStatus.BAD_REQUEST);
 
-    // throw new HttpException({
-    //   code: HttpStatus.BAD_REQUEST,
-    //   msg: '出錯囉!'
-    // }, HttpStatus.BAD_REQUEST);
 
-    throw new CustomException();
-    return this.appService.getHello();
-  }
+  // @Get()
+  // @UseFilters(HttpExceptionFilter)
+  // getHello(): string {
+  //   // throw new Error('出錯囉!');
+  //   // throw new HttpException('出錯囉!', HttpStatus.BAD_REQUEST);
+
+  //   // throw new HttpException({
+  //   //   code: HttpStatus.BAD_REQUEST,
+  //   //   msg: '出錯囉!'
+  //   // }, HttpStatus.BAD_REQUEST);
+
+  //   throw new CustomException();
+  //   return this.appService.getHello();
+  // }
 
 
 }
