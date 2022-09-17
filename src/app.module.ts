@@ -8,6 +8,7 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { HelloWorldMiddleware } from './middlewares/hello-world.middleware';
 import { TodoController } from './features/todo/todo.controller';
 import { AddUserMiddleware } from './middlewares/add-user.middleware';
+import { ConfigurationModule } from './common/configuration/configuration.module';
 
 class MessageBox {
   message: string;
@@ -18,10 +19,17 @@ class MessageBox {
 
 
 @Module({
-  imports: [TodoModule, CopyTodoModule,
-    HandsomeModule
+  imports: [
+    TodoModule,
+    CopyTodoModule,
+    HandsomeModule,
+    ConfigurationModule.forRoot({
+      path: `../${process.env.NODE_ENV || 'development'}.env`
+    })
   ],
-  controllers: [AppController],
+  controllers: [
+    AppController
+  ],
   providers: [
     AppService,
 

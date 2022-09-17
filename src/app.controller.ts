@@ -1,5 +1,6 @@
 import { Controller, Get, HttpException, HttpStatus, Inject, NotAcceptableException, Optional, Param, ParseIntPipe, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
+import { ConfigurationService } from './common/configuration/configuration.service';
 import { Auth } from './decorators/auth.decorator';
 import { Roles } from './decorators/roles.decorator';
 import { User } from './decorators/user.decorator';
@@ -18,18 +19,25 @@ export class AppController {
     private readonly appService: AppService,
     @Inject('MESSAGE_BOX') private readonly messageBox,
     @Inject('ALIAS_APP_SERVICE') private readonly alias: AppService,
-    @Optional() @Inject('HANDSOME_MAN') private readonly handsomeMan = { name: '' }
+    @Optional() @Inject('HANDSOME_MAN') private readonly handsomeMan = { name: '' },
+    private readonly configService: ConfigurationService
   ) {
     console.log(this.messageBox);
     console.log(this.alias === this.appService); // 進行比對
     console.log(this.handsomeMan);
   }
 
-  @Auth('staff')
+
   @Get()
-  getHello(@User('name') name: string): string {
-    return name;
+  getHello() {
+    return { username: this.configService.get('USERNAME') };
   }
+
+  // @Auth('staff')
+  // @Get()
+  // getHello(@User('name') name: string): string {
+  //   return name;
+  // }
 
   // @UseGuards(RoleGuard)
   // @Roles('admin')
