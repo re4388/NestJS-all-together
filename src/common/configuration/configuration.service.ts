@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
 import { ENV_PATH } from './constants/token.const';
 
 @Injectable()
@@ -12,16 +12,16 @@ export class ConfigurationService {
     constructor(
         @Inject(ENV_PATH) private readonly path: string
     ) {
-        this.setEnvironment();
+        // this.setEnvironment();
     }
 
     public get(key: string): string {
         return this.config[key];
     }
 
-    private setEnvironment(): void {
-        const filePath = path.resolve(__dirname, '../../', this.path);
-        this.config = dotenv.parse(fs.readFileSync(filePath));
-    }
+    // private setEnvironment(): void {
+    //     const filePath = path.resolve(__dirname, '../../', this.path);
+    //     this.config = dotenv.parse(fs.readFileSync(filePath));
+    // }
 
 }

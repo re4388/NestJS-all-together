@@ -9,6 +9,8 @@ import { HelloWorldMiddleware } from './middlewares/hello-world.middleware';
 import { TodoController } from './features/todo/todo.controller';
 import { AddUserMiddleware } from './middlewares/add-user.middleware';
 import { ConfigurationModule } from './common/configuration/configuration.module';
+import { ConfigModule } from '@nestjs/config';
+import configurationFactory from './config/configuration.factory';
 
 class MessageBox {
   message: string;
@@ -23,9 +25,26 @@ class MessageBox {
     TodoModule,
     CopyTodoModule,
     HandsomeModule,
-    ConfigurationModule.forRoot({
-      path: `../${process.env.NODE_ENV || 'development'}.env`
+
+    ConfigModule.forRoot({
+      envFilePath: ['development.local.env', 'development.env'],
+      expandVariables: true // 開啟環境變數檔變數嵌入功能
     })
+
+    // ConfigModule.forRoot({
+    //   envFilePath: ['development.local.env', 'development.env'],
+    //   load: [configurationFactory]
+    // })
+
+    // ConfigModule.forRoot({
+    //   envFilePath: 'development.env'
+    // })
+    // ConfigModule.forRoot()
+
+
+    // ConfigurationModule.forRoot({
+    //   path: `../${process.env.NODE_ENV || 'development'}.env`
+    // })
   ],
   controllers: [
     AppController

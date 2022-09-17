@@ -8,6 +8,7 @@ import { ENV_PATH } from './constants/token.const';
 export class ConfigurationModule {
 
   static forRoot(options: { path: string }): DynamicModule {
+
     return {
       providers: [
         {

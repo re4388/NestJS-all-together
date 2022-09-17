@@ -1,6 +1,7 @@
 import { Controller, Get, HttpException, HttpStatus, Inject, NotAcceptableException, Optional, Param, ParseIntPipe, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ConfigurationService } from './common/configuration/configuration.service';
+import { ConfigService } from '@nestjs/config';
+// import { ConfigurationService } from './common/configuration/configuration.service';
 import { Auth } from './decorators/auth.decorator';
 import { Roles } from './decorators/roles.decorator';
 import { User } from './decorators/user.decorator';
@@ -20,18 +21,42 @@ export class AppController {
     @Inject('MESSAGE_BOX') private readonly messageBox,
     @Inject('ALIAS_APP_SERVICE') private readonly alias: AppService,
     @Optional() @Inject('HANDSOME_MAN') private readonly handsomeMan = { name: '' },
-    private readonly configService: ConfigurationService
+    // private readonly configService: ConfigurationService
+    private readonly configService: ConfigService
   ) {
     console.log(this.messageBox);
     console.log(this.alias === this.appService); // 進行比對
     console.log(this.handsomeMan);
   }
 
-
   @Get()
   getHello() {
-    return { username: this.configService.get('USERNAME') };
+    const app_domain = this.configService.get('APP_DOMAIN');
+    const redirect_url = this.configService.get('APP_REDIRECT_URL');
+    return { app_domain, redirect_url };
   }
+
+
+  // @Get()
+  // getHello() {
+  //   const database = this.configService.get('database');
+  //   const db_host = this.configService.get('database.host'); // 取得 database 裡的 host
+  //   const port = this.configService.get('PORT');
+  //   return { database, db_host, port };
+  // }
+
+
+  // @Get()
+  // getHello() {
+  //   const username = this.configService.get('USERNAME');
+  //   const port = this.configService.get('PORT');
+  //   return { username, port };
+  // }
+
+  // @Get()
+  // getHello() {
+  //   return { username: this.configService.get('USERNAME') };
+  // }
 
   // @Auth('staff')
   // @Get()
