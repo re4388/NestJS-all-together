@@ -1,10 +1,10 @@
 import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
-import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiHeader, ApiOAuth2, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { SwaggerTodoService } from './swagger-todo.service';
 
 
-// Basic Auth
+// @ApiOAuth2(['write', 'read', 'update'])
 // @ApiBasicAuth()
 @ApiBearerAuth()
 @ApiTags('Todo')

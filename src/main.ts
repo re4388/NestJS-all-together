@@ -11,6 +11,7 @@ async function bootstrap() {
   const port = configService.get('port');
   console.log("port", port);
   setupSwagger(app);
+  app.enableCors();
   await app.listen(port);
 }
 
@@ -21,23 +22,23 @@ function setupSwagger(app: INestApplication) {
     .setTitle('TodoList')
     .setDescription('This is a basic Swagger document.')
     .setVersion('1.0')
-    // .addBearerAuth()
+    .addBearerAuth()
     // .addBasicAuth()
-    .addOAuth2({
-      type: 'oauth2',
-      flows: {
-        implicit: {
-          authorizationUrl: '<AUTHORIZATION_URL>', // 授權位址
-          tokenUrl: '<TOKEN_URL>', // 授權用 token
-          scopes: { // 權限選項
-            read: 'read',
-            write: 'write',
-            update: 'update',
-            delete: 'delete',
-          },
-        },
-      },
-    })
+    // .addOAuth2({
+    //   type: 'oauth2',
+    //   flows: {
+    //     implicit: {
+    //       authorizationUrl: '<AUTHORIZATION_URL>', // 授權位址
+    //       tokenUrl: '<TOKEN_URL>', // 授權用 token
+    //       scopes: { // 權限選項
+    //         read: 'read',
+    //         write: 'write',
+    //         update: 'update',
+    //         delete: 'delete',
+    //       },
+    //     },
+    //   },
+    // })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   const options: SwaggerCustomOptions = {
