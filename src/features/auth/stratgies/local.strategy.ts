@@ -16,7 +16,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         if (!user) {
             throw new UnauthorizedException();
         }
-        return { username: user.username, email: user.email };
+        return user; // modify for Jwt
+        // return { username: user.username, email: user.email };
     }
 
 }

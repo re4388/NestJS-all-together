@@ -6,7 +6,7 @@ import { CommonUtility } from 'src/core/utils/common.utility';
 import { CreateUserDto } from '../dto/create-user.dto';
 
 @Injectable()
-export class AuthuserService {
+export class AuthUserService {
 
 
     constructor(

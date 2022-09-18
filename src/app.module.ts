@@ -28,11 +28,12 @@ import { MulterHelper } from './core/helper/multer.helper';
 import { Agent } from 'https';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MooUserModule } from './features/mooUser/mooUser.module';
-import { AuthuserModule } from './features/authuser/authuser.module';
+import { AuthUserModule } from './features/authUser/authUser.module';
 import MongoConfigFactory from './config/mongo.config';
 import { APP_PIPE } from '@nestjs/core';
 import { AuthModule } from './features/auth/auth.module';
-
+import { UserController } from './features/user/user.controller';
+import SecretConfigFactory from './config/secret.config';
 
 class MessageBox {
   message: string;
@@ -45,6 +46,11 @@ class MessageBox {
 
 @Module({
   imports: [
+
+    ConfigModule.forRoot({
+      load: [MongoConfigFactory, SecretConfigFactory],
+      isGlobal: true
+    }),
 
     ConfigModule.forRoot({
       load: [MongoConfigFactory]
@@ -102,7 +108,7 @@ class MessageBox {
 
     MooUserModule,
 
-    AuthuserModule,
+    AuthUserModule,
 
     AuthModule
 
@@ -122,7 +128,8 @@ class MessageBox {
     // })
   ],
   controllers: [
-    AppController
+    AppController,
+    UserController
   ],
   providers: [
     AppService,
