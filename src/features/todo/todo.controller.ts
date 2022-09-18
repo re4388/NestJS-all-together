@@ -10,6 +10,15 @@ export class TodoController {
         private readonly todoService: TodoService
     ) { }
 
+    @Post()
+    create(
+        @Body(new ParseArrayPipe({ items: CreateTodoDto }))
+        dtos: CreateTodoDto[]
+    ) {
+        return dtos;
+    }
+
+
     @Get()
     getAll() {
         return [];
@@ -53,13 +62,6 @@ export class TodoController {
     //     return ids;
     // }
 
-    // @Post()
-    // create(
-    //     @Body(new ParseArrayPipe({ items: CreateTodoDto }))
-    //     dtos: CreateTodoDto[]
-    // ) {
-    //     return dtos;
-    // }
 
 
     // @Get(':id')

@@ -37,6 +37,7 @@ import { AuthorizationModule } from './common/authorization/authorization.module
 import { TodosModule } from './features/todos/todos.module';
 import SecretConfigFactory from './config/secret.config';
 import { join } from 'path';
+import { SwaggerTodoModule } from './features/swagger-todo/swagger-todo.module';
 
 class MessageBox {
   message: string;
@@ -123,7 +124,9 @@ class MessageBox {
       global: true,
     }),
 
-    TodosModule
+    TodosModule,
+
+    SwaggerTodoModule
 
     // ConfigModule.forRoot({
     //   envFilePath: ['development.local.env', 'development.env'],
