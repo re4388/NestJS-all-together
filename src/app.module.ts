@@ -33,7 +33,10 @@ import MongoConfigFactory from './config/mongo.config';
 import { APP_PIPE } from '@nestjs/core';
 import { AuthModule } from './features/auth/auth.module';
 import { UserController } from './features/user/user.controller';
+import { AuthorizationModule } from './common/authorization/authorization.module';
+import { TodosModule } from './features/todos/todos.module';
 import SecretConfigFactory from './config/secret.config';
+import { join } from 'path';
 
 class MessageBox {
   message: string;
@@ -110,7 +113,17 @@ class MessageBox {
 
     AuthUserModule,
 
-    AuthModule
+    AuthModule,
+
+    // AuthorizationModule,
+
+    AuthorizationModule.register({
+      modelPath: join(__dirname, '../casbin/model.conf'),
+      policyAdapter: join(__dirname, '../casbin/policy.csv'),
+      global: true,
+    }),
+
+    TodosModule
 
     // ConfigModule.forRoot({
     //   envFilePath: ['development.local.env', 'development.env'],
