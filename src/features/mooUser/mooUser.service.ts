@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from 'src/common/models/user.model';
+import { MooUser, UserDocument } from 'src/common/models/Moouser.model';
 
 @Injectable()
 export class UserService {
     constructor(
-        @InjectModel(User.name) private readonly userModel: Model<UserDocument>
+        @InjectModel(MooUser.name) private readonly userModel: Model<UserDocument>
     ) { }
 
     removeById(id: string) {

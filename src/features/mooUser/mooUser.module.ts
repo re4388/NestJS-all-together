@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserDocument, UserSchema } from 'src/common/models/user.model';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { MooUser, UserDocument, UserSchema } from 'src/common/models/Moouser.model';
+import { UserController } from './mooUser.controller';
+import { UserService } from './mooUser.service';
 
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
       {
-        name: User.name,
+        name: MooUser.name,
         useFactory: () => {
           UserSchema.pre('save', function (this: UserDocument, next) {
             console.log("mongo pre hook", this);
@@ -25,4 +25,4 @@ import { UserService } from './user.service';
   controllers: [UserController],
   providers: [UserService]
 })
-export class UserModule { }
+export class MooUserModule { }

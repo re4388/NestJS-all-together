@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { User } from './user.model';
+import { MooUser } from './Moouser.model';
 
 export type TodoDocument = Todo & Document;
 
@@ -17,7 +17,7 @@ export class Todo {
     completed: boolean;
 
     @Prop({ type: Types.ObjectId, ref: 'User' })
-    owner: User;
+    owner: MooUser;
 
 }
 

@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from './mooUser.service';
 
 @Controller('user')
 export class UserController {

@@ -3,6 +3,7 @@
         "dtos",
         "maxlength",
         "nestjs",
+        "signin",
         "todos"
     ]
 }

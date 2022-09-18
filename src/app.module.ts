@@ -2,7 +2,8 @@ import {
   BeforeApplicationShutdown, MiddlewareConsumer,
   Module, NestModule, OnApplicationBootstrap,
   OnModuleDestroy, OnModuleInit,
-  RequestMethod
+  RequestMethod,
+  ValidationPipe
 } from '@nestjs/common';
 
 import { HttpModule } from '@nestjs/axios'
@@ -26,8 +27,11 @@ import { diskStorage } from 'multer';
 import { MulterHelper } from './core/helper/multer.helper';
 import { Agent } from 'https';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserModule } from './features/user/user.module';
+import { MooUserModule } from './features/mooUser/mooUser.module';
+import { AuthuserModule } from './features/authuser/authuser.module';
 import MongoConfigFactory from './config/mongo.config';
+import { APP_PIPE } from '@nestjs/core';
+import { AuthModule } from './features/auth/auth.module';
 
 
 class MessageBox {
@@ -36,7 +40,6 @@ class MessageBox {
     this.message = message;
   }
 }
-
 
 
 
@@ -97,7 +100,11 @@ class MessageBox {
 
     Storage2Module,
 
-    UserModule
+    MooUserModule,
+
+    AuthuserModule,
+
+    AuthModule
 
     // ConfigModule.forRoot({
     //   envFilePath: ['development.local.env', 'development.env'],
@@ -119,6 +126,10 @@ class MessageBox {
   ],
   providers: [
     AppService,
+    { // 注入全域 Pipe
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
 
     {
       provide: 'MESSAGE_BOX',
