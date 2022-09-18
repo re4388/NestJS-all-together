@@ -25,6 +25,10 @@ import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { MulterHelper } from './core/helper/multer.helper';
 import { Agent } from 'https';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from './features/user/user.module';
+import MongoConfigFactory from './config/mongo.config';
+
 
 class MessageBox {
   message: string;
@@ -34,8 +38,22 @@ class MessageBox {
 }
 
 
+
+
 @Module({
   imports: [
+
+    ConfigModule.forRoot({
+      load: [MongoConfigFactory]
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        uri: config.get<string>('mongo.uri')
+      })
+    }),
+
 
     HttpModule.registerAsync({
       imports: [ConfigModule],
@@ -77,7 +95,9 @@ class MessageBox {
 
     BookModule,
 
-    Storage2Module
+    Storage2Module,
+
+    UserModule
 
     // ConfigModule.forRoot({
     //   envFilePath: ['development.local.env', 'development.env'],

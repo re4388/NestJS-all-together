@@ -58,10 +58,10 @@ export class AppController {
 
   }
 
-  @Get('/todos')
-  getTodos() {
-    return this.appService.getTodos();
-  }
+  // @Get('/todos')
+  // getTodos() {
+  //   return this.appService.getTodos();
+  // }
 
 
   @Post('/multipleAnyField')
